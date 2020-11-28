@@ -1,17 +1,5 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "12345678";
-$dbname ="nkustdb";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password,$dbname);
-
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
-
+require("dbinfo.php");
 ?>
 
 <!doctype html>
@@ -47,6 +35,10 @@ if ($conn->connect_error) {
       </li>
     </ul>
 <hr>
+  <form action="insert.php" method="post">
+  訊息內容: <input type="text" name="name" size=40>
+  <input type="submit" value ="送出" >
+  </form>
 
     <?php
         $sql = "SELECT * FROM news";
@@ -55,12 +47,14 @@ if ($conn->connect_error) {
         if ($result->num_rows > 0) {
           // output data of each row
           echo "<table class='table table-striped'> ";
-          echo "<tr><th>編號</th><th>馬路編號</th><th>張貼日期</th></tr>";
+          echo "<tr><th>編號</th><th>馬路編號</th><th>張貼日期</th><th>管理</th></tr>";
           while($row = $result->fetch_assoc()) {
           echo "<tr>" ;
           echo "<td>". $row["id"]. "</td>" .
                "<td>". $row["title"]. "</td>" .
-               "<td>". $row["pub_date"]."</td>";
+               "<td>". $row["pub_date"]."</td>".
+               "<td><a href='deleteit.php?id=".
+                $row["id"]. "'>刪除</a></td>";
           echo "</tr>" ;
           }     
           echo "</table>";
